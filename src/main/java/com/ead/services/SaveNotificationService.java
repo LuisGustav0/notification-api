@@ -11,7 +11,7 @@ public class SaveNotificationService {
 
     private final NotificationRepository repository;
 
-    public void call(final NotificationModel notification) {
-        this.repository.save(notification);
+    public NotificationModel call(final NotificationModel notification) {
+        return this.repository.save(notification);
     }
 }
