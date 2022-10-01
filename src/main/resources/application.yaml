@@ -1,0 +1,64 @@
+server:
+  port: 8084
+  servlet:
+    context-path: '/ead-notification/'
+
+spring:
+  application:
+    name: ead-course-api
+  # config-server
+  config:
+    import: 'optional:configserver:'
+    cloud:
+      config:
+        discovery:
+          serviceId: ead-config-server
+  # Banco de dados
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_ead_notification
+    username: postgres
+    password: ${PASSWORD_POSTGRES}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+  # RabbitMQ
+  rabbitmq:
+    addresses: ${RABBITMQ_ADDRESSES}
+
+
+# Log
+logging:
+  level:
+    com.ead: TRACE
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate: INFO
+
+ead:
+  broker:
+    exchange:
+      notificationCommandExchange: ead.notificationcommand
+    queue:
+      notificationCommandQueue:
+        name: ead.notificationcommand.ms.notification
+    key:
+      notificationCommandKey: ms.notification
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - refresh
+          - health
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    hostname: localhost
