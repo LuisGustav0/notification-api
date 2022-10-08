@@ -5,6 +5,7 @@ import com.ead.services.PageableNotificationByUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ public class PageableNotificationByUserResource {
 
     private final PageableNotificationByUserService service;
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping("/users/{userId}/notifications")
     public ResponseEntity<PageNotificationByUserResponse> call(@PathVariable UUID userId, final Pageable pageable) {
         final PageNotificationByUserResponse response = this.service.call(userId, pageable);
